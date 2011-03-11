@@ -1,0 +1,76 @@
+
+require.paths.unshift(__dirname + '/../lib');
+
+/**
+ * This example shows how you can deal with exceptions handling with Sync library
+ */
+
+var Sync = require('sync');
+
+// Simple asynchronous function which returns and error to a callback
+// look at examples/simple.js to see how someAsyncFunction works normally
+function someAsyncFunction(a, b, callback) {
+    setTimeout(function(){
+        callback('something went wrong');
+    }, 1000)
+}
+
+// Here we need to start new Fiber inside of which we can do our tests
+Sync.Fiber(function(){
+    try {
+        var result = someAsyncFunction.sync(null, 2, 3);
+    }
+    catch (e) {
+        console.error(e); // will print 'something went wrong' after 1 sec
+    }
+})
+
+/**
+ * Another example shows how Sync.Fiber throws an exception to a callback
+ * if some error occured inside of 'fn' body
+ * look at examples/fiber.js for more details about Sync.Fiber
+ */
+
+// Simple asynchronous function with fiber inside and throws an exception
+function someFiberAsyncFunction(file, callback) {
+    Sync.Fiber(function(){
+        throw new Error('something went wrong again');
+    }, callback)
+}
+
+// Call someAsyncFunction in a normal asynchronous way
+someFiberAsyncFunction(__filename, function(err, source){
+    if (err) return console.error(err); // will print 'something went wrong again'
+})
+
+// Another example is synchronous function which can be called only inside of a fiber
+// and throws an exception inside of it's body
+function someSyncFunction(file) {
+    throw new Error('something went wrong synchronously');
+}
+
+// Turn someSyncFunction to asynchronous one
+var someSyncFunctionAsync = someSyncFunction.async(null);
+// call it in asynchronous way
+someSyncFunctionAsync(__filename, function(err, source){
+    if (err) return console.error(err); // will print 'something went wrong synchronously'
+})
+
+
+/**
+ * Exceptions inside of a Sync.Parallel
+ * see examples/parallel.js for more details about Sync.Parallel
+ */
+Sync.Fiber(function(){
+    
+    // Here we need to call someAsyncFunction two times with different arguments in parallel
+    // but wait for both results and only then continue
+    try {
+        var results = Sync.Parallel(function(callback){
+            someAsyncFunction(2, 2, callback());
+        });
+    }
+    catch (e) {
+        console.error(e); // will print 'something went wrong' after 1 sec
+    }
+})
