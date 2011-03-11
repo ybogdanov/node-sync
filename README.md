@@ -55,7 +55,7 @@ Parallel execution:
 	});
 	console.log(result); // { foo: 5, bar: 10, baz: 20 }
 
-See more examples in [...] directory.
+See more examples in [examples](https://github.com/0ctave/node-sync/tree/master/examples) directory.
 
 # Installation
 install
