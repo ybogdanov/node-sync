@@ -25,6 +25,11 @@ var runTest = module.exports = function(callback)
         }, function(err){
             assert.equal(err, 'something went wrong');
         })
+        
+        // Test fiber passing
+        Sync.Fiber(function(fiber){
+            assert.ok(fiber instanceof Fiber);
+        })
 
         // Test without callback
         assert.doesNotThrow(function(){
