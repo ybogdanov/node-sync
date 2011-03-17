@@ -45,17 +45,14 @@ someFiberAsyncFunction(__filename, function(err, source){
 
 // Another example is synchronous function which can be called only inside of a fiber
 // and throws an exception inside of it's body
-function someSyncFunction(file) {
+var someSyncFunction = function(file) {
     throw new Error('something went wrong synchronously');
-}
+}.async() // <-- Turn someSyncFunction to asynchronous one
 
-// Turn someSyncFunction to asynchronous one
-var someSyncFunctionAsync = someSyncFunction.async(null);
 // call it in asynchronous way
-someSyncFunctionAsync(__filename, function(err, source){
+someSyncFunction(__filename, function(err, source){
     if (err) return console.error(err); // will print 'something went wrong synchronously'
 })
-
 
 /**
  * Exceptions inside of a Sync.Parallel

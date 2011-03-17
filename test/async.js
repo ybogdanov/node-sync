@@ -54,6 +54,18 @@ var runTest = module.exports = function(callback)
         syncFunctionThrowsExceptionAsync(2, 3, function(err, result){
             assert.equal(err, 'something went wrong');
         })
+        
+        // test on throws exception when call without callback
+        var syncFunctionAsync = syncFunction.async();
+        assert.throws(function(){
+            syncFunctionAsync(2, 3);
+        }, 'Missing callback as last argument to async function');
+        
+        // test on working synchronously within a Fiber
+        Sync.Fiber(function(){
+            var result = syncFunctionAsync(2, 3);
+            assert.equal(result, 5);
+        })
     
         // test on returning value with object context
         var syncMethodAsync = testObject.syncMethod.async(testObject);
