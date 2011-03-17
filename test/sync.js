@@ -14,8 +14,32 @@ function asyncFunction(a, b, callback) {
     })
 }
 
+// Simple asynchronous function returning a value synchronously
+function asyncFunctionReturningValue(a, b, callback) {
+    return 123;
+    process.nextTick(function(){
+        callback(null, a + b);
+    })
+}
+
+// Asynchronous which returns multiple arguments to a callback and returning a value synchronously
+function asyncFunctionReturningValueMultipleArguments(a, b, callback) {
+    return 123;
+    process.nextTick(function(){
+        callback(null, a, b);
+    })
+}
+
 // Simple asynchronous function which throws an exception
 function asyncFunctionThrowsException(a, b, callback) {
+    process.nextTick(function(){
+        callback('something went wrong');
+    })
+}
+
+// Simple asynchronous function which throws an exception and returning a value synchronously
+function asyncFunctionReturningValueThrowsException(a, b, callback) {
+    return 123;
     process.nextTick(function(){
         callback('something went wrong');
     })
@@ -66,10 +90,24 @@ var runTest = module.exports = function(callback)
         assert.throws(function(){
             var result = asyncFunctionThrowsException.sync(null, 2, 3);
         }, 'something went wrong');
+        
+        // test asynchronous function should not return a synchronous value
+        var result = asyncFunctionReturningValue.sync(null, 2, 3);
+        assert.equal(result, 2 + 3);
     
         // test returning multiple arguments
         var result = asyncFunctionMultipleArguments.sync(null, 2, 3);
         assert.deepEqual(result, [2, 3]);
+        
+        // test asynchronous function should not return a synchronous value (multiple arguments)
+        var result = asyncFunctionReturningValueMultipleArguments.sync(null, 2, 3);
+        assert.deepEqual(result, [2, 3]);
+        
+        // test asynchronous function should not return a synchronous value (throwing exception)
+         // test on throws exception
+        assert.throws(function(){
+            var result = asyncFunctionReturningValueThrowsException.sync(null, 2, 3);
+        }, 'something went wrong');
     
         // test on returning value with object context
         var result = testObject.asyncMethod.sync(testObject, 3);
