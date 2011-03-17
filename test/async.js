@@ -60,6 +60,12 @@ var runTest = module.exports = function(callback)
         syncMethodAsync(3, function(err, result){
             assert.equal(result, testObject.property + 3);
         })
+
+        // test automatic context assignment
+        testObject.syncMethodAuto = testObject.syncMethod.async();
+        testObject.syncMethodAuto(3, function(err, result){
+            assert.equal(result, testObject.property + 3);
+        })
     
         // test on throws exception with object context
         var syncMethodThrowsExceptionAsync = testObject.syncMethodThrowsException.async(testObject);
