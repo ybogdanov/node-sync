@@ -62,10 +62,19 @@ var runTest = module.exports = function(callback)
         }, 'Missing callback as last argument to async function');
         
         // test on working synchronously within a Fiber
-        Sync.Fiber(function(){
+        Fiber(function(){
             var result = syncFunctionAsync(2, 3);
             assert.equal(result, 5);
-        })
+        }).run()
+        
+        // test running in a same fiber
+        Fiber(function(){
+            var fiber = Fiber.current;
+            (function(){
+                assert.ok(Fiber.current instanceof Fiber);
+                assert.strictEqual(Fiber.current, fiber);
+            }).async()();
+        }).run()
     
         // test on returning value with object context
         var syncMethodAsync = testObject.syncMethod.async(testObject);
