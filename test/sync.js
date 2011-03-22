@@ -16,18 +16,18 @@ function asyncFunction(a, b, callback) {
 
 // Simple asynchronous function returning a value synchronously
 function asyncFunctionReturningValue(a, b, callback) {
-    return 123;
     process.nextTick(function(){
         callback(null, a + b);
     })
+    return 123;
 }
 
 // Asynchronous which returns multiple arguments to a callback and returning a value synchronously
 function asyncFunctionReturningValueMultipleArguments(a, b, callback) {
-    return 123;
     process.nextTick(function(){
         callback(null, a, b);
     })
+    return 123;
 }
 
 // Simple asynchronous function which throws an exception
@@ -39,10 +39,10 @@ function asyncFunctionThrowsException(a, b, callback) {
 
 // Simple asynchronous function which throws an exception and returning a value synchronously
 function asyncFunctionReturningValueThrowsException(a, b, callback) {
-    return 123;
     process.nextTick(function(){
         callback('something went wrong');
     })
+    return 123;
 }
 
 // Asynchronous which returns multiple arguments to a callback
