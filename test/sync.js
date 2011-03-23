@@ -45,6 +45,14 @@ function asyncFunctionReturningValueThrowsException(a, b, callback) {
     return 123;
 }
 
+// Wrong asynchronous which calls callback twice
+function asyncFunctionCallbackTwice(a, b, callback) {
+    process.nextTick(function(){
+        callback(null, a + b);
+        callback(null, a - b);
+    })
+}
+
 // Asynchronous which returns multiple arguments to a callback
 function asyncFunctionMultipleArguments(a, b, callback) {
     process.nextTick(function(){
@@ -104,10 +112,13 @@ var runTest = module.exports = function(callback)
         assert.deepEqual(result, [2, 3]);
         
         // test asynchronous function should not return a synchronous value (throwing exception)
-         // test on throws exception
         assert.throws(function(){
             var result = asyncFunctionReturningValueThrowsException.sync(null, 2, 3);
         }, 'something went wrong');
+        
+        // test asynchronous which calls callback twice (should not be called twice)
+        var result = asyncFunctionCallbackTwice.sync(null, 2, 3);
+        assert.equal(result, 2 + 3);
     
         // test on returning value with object context
         var result = testObject.asyncMethod.sync(testObject, 3);
