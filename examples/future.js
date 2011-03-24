@@ -3,6 +3,9 @@ require.paths.unshift(__dirname + '/../lib');
 
 /**
  * Future example
+ * Shows how we can postpone yielding and call multiple functions in parallel
+ * And then wait for all results in a single point
+ *
  */
 
 var Sync = require('sync');
@@ -17,12 +20,16 @@ function someAsyncFunction(a, b, callback) {
 // Here we need to start new Fiber inside of which we can do our tests
 Sync(function(){
     
-    // no-yield here
-    var result = someAsyncFunction.future(null, 2, 3);
-    var result2 = someAsyncFunction.future(null, 4, 4);
-    console.log(result); // [Function: Future] - immediately
+    // no-yield here, call asynchronously
+    var foo = someAsyncFunction.future(null, 2, 3);
+    var bar = someAsyncFunction.future(null, 4, 4);
+    
+    // we are immediately here
+    
+    // foo, bar - our tickets to the future!
+    console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
     
     // Yield here
-    console.log(result.value, result2.value); // '5' after 1 sec
+    console.log(foo.result, bar.result); // '5 8' after 1 sec (not two)
     
 })

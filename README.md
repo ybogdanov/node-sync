@@ -54,6 +54,19 @@ Parallel execution:
 		asyncFunction(10, 10, callback('baz'));
 	});
 	console.log(result); // { foo: 5, bar: 10, baz: 20 }
+	
+Future paradigm:
+	// no-yield here, call asynchronously, so functions will be called in parallel
+    var foo = someAsyncFunction.future(null, 2, 3);
+    var bar = someAsyncFunction.future(null, 4, 4);
+    
+    // we are immediately here
+    
+    // foo, bar - our tickets to the future!
+    console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
+    
+    // Yield here
+    console.log(foo.result, bar.result); // 5 8
 
 See more examples in [examples](https://github.com/0ctave/node-sync/tree/master/examples) directory.
 

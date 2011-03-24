@@ -55,6 +55,7 @@ var runTest = module.exports = function(callback)
 }
 
 if (!module.parent) {
-    runTest();
-    console.log('%s done', __filename);
+    runTest(function(){
+        console.log('%s done', __filename);
+    });
 }

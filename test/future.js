@@ -1,7 +1,7 @@
 require.paths.unshift(__dirname + '/../lib');
 
 /**
- * Tests for Function.prototype.sync
+ * Tests for Function.prototype.future
  */
 
 var Sync = require('sync'),
@@ -14,35 +14,11 @@ function asyncFunction(a, b, callback) {
     })
 }
 
-// Simple asynchronous function returning a value synchronously
-function asyncFunctionReturningValue(a, b, callback) {
-    process.nextTick(function(){
-        callback(null, a + b);
-    })
-    return 123;
-}
-
-// Asynchronous which returns multiple arguments to a callback and returning a value synchronously
-function asyncFunctionReturningValueMultipleArguments(a, b, callback) {
-    process.nextTick(function(){
-        callback(null, a, b);
-    })
-    return 123;
-}
-
 // Simple asynchronous function which throws an exception
 function asyncFunctionThrowsException(a, b, callback) {
     process.nextTick(function(){
         callback('something went wrong');
     })
-}
-
-// Simple asynchronous function which throws an exception and returning a value synchronously
-function asyncFunctionReturningValueThrowsException(a, b, callback) {
-    process.nextTick(function(){
-        callback('something went wrong');
-    })
-    return 123;
 }
 
 // Wrong asynchronous which calls callback twice
@@ -91,47 +67,50 @@ var runTest = module.exports = function(callback)
     Sync(function(){
     
         // test on returning value
-        var result = asyncFunction.sync(null, 2, 3);
-        assert.equal(result, 2 + 3);
+        var future = asyncFunction.future(null, 2, 3);
+        // check future function
+        assert.ok(future instanceof Sync.Future);
+        // check future result
+        assert.equal(future.result, 2 + 3);
+        // check error
+        assert.strictEqual(future.error, null);
+        
+        // check yield on error getter
+        var future = asyncFunction.future(null, 2, 3);
+        // check error
+        assert.strictEqual(future.error, null);
+        // check future result
+        assert.equal(future.result, 2 + 3);
     
         // test on throws exception
+        var future = asyncFunctionThrowsException.future(null, 2, 3);
         assert.throws(function(){
-            var result = asyncFunctionThrowsException.sync(null, 2, 3);
+            future.result;
         }, 'something went wrong');
+        // check error
+        assert.ok(future.error instanceof Error);
         
-        // test asynchronous function should not return a synchronous value
-        var result = asyncFunctionReturningValue.sync(null, 2, 3);
-        assert.equal(result, 2 + 3);
-    
         // test returning multiple arguments
-        var result = asyncFunctionMultipleArguments.sync(null, 2, 3);
-        assert.deepEqual(result, [2, 3]);
-        
-        // test asynchronous function should not return a synchronous value (multiple arguments)
-        var result = asyncFunctionReturningValueMultipleArguments.sync(null, 2, 3);
-        assert.deepEqual(result, [2, 3]);
-        
-        // test asynchronous function should not return a synchronous value (throwing exception)
-        assert.throws(function(){
-            var result = asyncFunctionReturningValueThrowsException.sync(null, 2, 3);
-        }, 'something went wrong');
+        var future = asyncFunctionMultipleArguments.future(null, 2, 3);
+        assert.deepEqual(future.result, [2, 3]);
         
         // test asynchronous which calls callback twice (should not be called twice)
-        var result = asyncFunctionCallbackTwice.sync(null, 2, 3);
-        assert.equal(result, 2 + 3);
+        var future = asyncFunctionCallbackTwice.future(null, 2, 3);
+        assert.equal(future.result, 2 + 3);
     
         // test on returning value with object context
-        var result = testObject.asyncMethod.sync(testObject, 3);
-        assert.equal(result, testObject.property + 3);
+        var future = testObject.asyncMethod.future(testObject, 3);
+        assert.equal(future.result, testObject.property + 3);
     
         // test on throws exception with object context
+        var future = testObject.asyncMethodThrowsException.future(testObject, 2);
         assert.throws(function(){
-            var result = testObject.asyncMethodThrowsException.sync(testObject, 2);
+            future.result;
         }, 'something went wrong');
-    
+        
         // test returning multiple arguments with object context
-        var result = testObject.asyncMethodMultipleArguments.sync(testObject, 3);
-        assert.deepEqual(result, [testObject.property, 3]);
+        var future = testObject.asyncMethodMultipleArguments.future(testObject, 3);
+        assert.deepEqual(future.result, [testObject.property, 3]);
     
     }, function(e){
         if (e) {
