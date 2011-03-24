@@ -19,9 +19,10 @@ Sync(function(){
     
     // no-yield here
     var result = someAsyncFunction.future(null, 2, 3);
+    var result2 = someAsyncFunction.future(null, 4, 4);
     console.log(result); // [Function: Future] - immediately
     
     // Yield here
-    console.log(result()); // '5' after 1 sec
+    console.log(result.value, result2.value); // '5' after 1 sec
     
 })
