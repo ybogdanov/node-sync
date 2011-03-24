@@ -1,7 +1,7 @@
 require.paths.unshift(__dirname + '/../lib');
 
 /**
- * Tests for Sync.Fiber function
+ * Tests for Sync function
  */
 
 var Sync = require('sync'),
@@ -13,29 +13,36 @@ var runTest = module.exports = function(callback)
     
     try {
         // Test returning value
-        Sync.Fiber(function(){
+        Sync(function(){
             return 'some value';
         }, function(err, value){
             assert.equal(value, 'some value');
         })
 
         // Test throws an exception
-        Sync.Fiber(function(){
+        Sync(function(){
             throw 'something went wrong';
         }, function(err){
             assert.equal(err, 'something went wrong');
         })
         
         // Test fiber passing
-        Sync.Fiber(function(fiber){
+        Sync(function(fiber){
             assert.ok(fiber instanceof Fiber);
         })
 
         // Test without callback
         assert.doesNotThrow(function(){
-            Sync.Fiber(function(){
+            Sync(function(){
                 return 'test';
             })
+        })
+        
+        // Test backwards capability
+        Sync.Fiber(function(){
+            return 'some value';
+        }, function(err, value){
+            assert.equal(value, 'some value');
         })
     }
     catch (e) {

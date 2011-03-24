@@ -20,7 +20,7 @@ setTimeout(function(){
 }, 500)
 
 // Here we need to start new Fiber inside of which we can do our tests
-Sync.Fiber(function(){
+Sync(function(){
     
     // Call the function synchronously
     // current fiber will yield for 1 sec, so it should be returned later than Timeout above

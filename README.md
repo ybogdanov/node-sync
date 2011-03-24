@@ -37,10 +37,10 @@ It throws exceptions!
 	}
 
 Parallel execution:
-	var Sync = require('sync');
+	var Parallel = require('sync').Parallel;
 	
 	// Parallel function will return values only when all callbacks will be executed
-	var result = Sync.Parallel(function(callback){
+	var result = Parallel(function(callback){
 		asyncFunction(2, 3, callback());
 		asyncFunction(5, 5, callback());
 		asyncFunction(10, 10, callback());
@@ -48,7 +48,7 @@ Parallel execution:
 	console.log(result); // [5, 10, 20]
 	
 	// Associative result
-	var result = Sync.Parallel(function(callback){
+	var result = Parallel(function(callback){
 		asyncFunction(2, 3, callback('foo'));
 		asyncFunction(5, 5, callback('bar'));
 		asyncFunction(10, 10, callback('baz'));

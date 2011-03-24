@@ -15,7 +15,7 @@ function someAsyncFunction(a, b, callback) {
 }
 
 // Here we need to start new Fiber inside of which we can do our tests
-Sync.Fiber(function(){
+Sync(function(){
     
     // Here we just need to call the method .sync() for synchronous behavior
     // (first argument to sync is an object context, we don't need it in this case)

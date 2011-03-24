@@ -45,7 +45,7 @@ catch (e) {
 }
 
 // But if we call this function from within synchronous environment (inside of a Fiber), it will run!
-Sync.Fiber(function(){
+Sync(function(){
     var result = someSyncFunction(2, 3);
     console.log(result); // will print '5' after 1 sec
 })

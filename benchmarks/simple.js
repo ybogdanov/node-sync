@@ -35,7 +35,7 @@ loop(0, function(){
     console.log('Event-loop took %d ms', (new Date - start))
     
     // Test sync
-    Sync.Fiber(function(){
+    Sync(function(){
         var start = new Date();
         for(var i = 0; i <= max; i++) {
             sum.sync(null, 3, 4);

@@ -16,7 +16,7 @@ function someAsyncFunction(a, b, callback) {
 }
 
 // Here we need to start new Fiber inside of which we can do our tests
-Sync.Fiber(function(){
+Sync(function(){
     try {
         var result = someAsyncFunction.sync(null, 2, 3);
     }
@@ -26,14 +26,14 @@ Sync.Fiber(function(){
 })
 
 /**
- * Another example shows how Sync.Fiber throws an exception to a callback
+ * Another example shows how Sync throws an exception to a callback
  * if some error occured inside of 'fn' body
- * look at examples/fiber.js for more details about Sync.Fiber
+ * look at examples/fiber.js for more details about Sync
  */
 
 // Simple asynchronous function with fiber inside and throws an exception
 function someFiberAsyncFunction(file, callback) {
-    Sync.Fiber(function(){
+    Sync(function(){
         throw new Error('something went wrong again');
     }, callback)
 }
@@ -58,7 +58,7 @@ someSyncFunction(__filename, function(err, source){
  * Exceptions inside of a Sync.Parallel
  * see examples/parallel.js for more details about Sync.Parallel
  */
-Sync.Fiber(function(){
+Sync(function(){
     
     // Here we need to call someAsyncFunction two times with different arguments in parallel
     // but wait for both results and only then continue

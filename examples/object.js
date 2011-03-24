@@ -23,7 +23,7 @@ var someObject = {
 }
 
 // Here we need to start new Fiber inside of which we can do our tests
-Sync.Fiber(function(){
+Sync(function(){
     
     // Here we need to set 'this' context for someAsyncMethod
     // It will add passed argument to someObject.someProperty and return the result

@@ -16,7 +16,7 @@ function someAsyncFunction(a, b, callback) {
 }
 
 // Here we need to start new Fiber inside of which we can do our tests
-Sync.Fiber(function(){
+Sync(function(){
     
     // Here we need to call someAsyncFunction two times with different arguments in parallel
     // but wait for both results and only then continue

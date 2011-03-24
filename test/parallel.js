@@ -23,7 +23,7 @@ function asyncFunctionThrowsException(a, b, callback) {
 
 var runTest = module.exports = function(callback)
 {
-    Sync.Fiber(function(){
+    Sync(function(){
     
         // Test parallel with no callbacks inside
         // should continue evaluating

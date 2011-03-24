@@ -88,7 +88,7 @@ var testObject = {
 
 var runTest = module.exports = function(callback)
 {
-    Sync.Fiber(function(){
+    Sync(function(){
     
         // test on returning value
         var result = asyncFunction.sync(null, 2, 3);
