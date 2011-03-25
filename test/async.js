@@ -93,6 +93,51 @@ var runTest = module.exports = function(callback)
         syncMethodThrowsExceptionAsync(3, function(err, result){
             assert.equal(err, 'something went wrong');
         })
+        
+        // Test async call with .sync()
+        Fiber(function(){
+            var syncFunctionAsync = syncFunction.async();
+            var result = syncFunctionAsync.sync(null, 2, 3);
+            assert.equal(result, 2 + 3);
+        }).run()
+        
+        // Test async call with .sync() throwing exception
+        Fiber(function(){
+            var syncFunctionThrowsExceptionAsync = syncFunctionThrowsException.async();
+            assert.throws(function(){
+                syncFunctionThrowsExceptionAsync.sync(null, 2, 3);
+            }, 'something went wrong');
+        }).run()
+        
+        // Test async call with .sync() with object context
+        Fiber(function(){
+            var syncMethodAsync = testObject.syncMethod.async(testObject);
+            var result = syncMethodAsync.sync(testObject, 3);
+            assert.equal(result, testObject.property + 3);
+        }).run()
+        
+        // Test async call with .future()
+        Fiber(function(){
+            var syncFunctionAsync = syncFunction.async();
+            var future = syncFunctionAsync.future(null, 2, 3);
+            assert.equal(future.result, 2 + 3);
+        }).run()
+
+        // Test async call with .future() throwing exception
+        Fiber(function(){
+            var syncFunctionThrowsExceptionAsync = syncFunctionThrowsException.async();
+            var future = syncFunctionThrowsExceptionAsync.future(null, 2, 3);
+            assert.throws(function(){
+                future.result;
+            }, 'something went wrong');
+        }).run()
+
+        // Test async call with .future() with object context
+        Fiber(function(){
+            var syncMethodAsync = testObject.syncMethod.async(testObject);
+            var future = syncMethodAsync.future(testObject, 3);
+            assert.equal(future.result, testObject.property + 3);
+        }).run()
     }
     catch (e) {
         console.error(e.stack);
