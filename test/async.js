@@ -109,10 +109,17 @@ var runTest = module.exports = function(callback)
             }, 'something went wrong');
         }).run()
         
-        // Test async call with .sync() with object context
+        // Test async call with .sync() with object context 1
         Fiber(function(){
             var syncMethodAsync = testObject.syncMethod.async(testObject);
             var result = syncMethodAsync.sync(testObject, 3);
+            assert.equal(result, testObject.property + 3);
+        }).run()
+        
+        // Test async call with .sync() with object context 2
+        Fiber(function(){
+            var syncMethodAsync = testObject.syncMethod.async(testObject);
+            var result = syncMethodAsync.sync(null, 3);
             assert.equal(result, testObject.property + 3);
         }).run()
         
@@ -136,6 +143,13 @@ var runTest = module.exports = function(callback)
         Fiber(function(){
             var syncMethodAsync = testObject.syncMethod.async(testObject);
             var future = syncMethodAsync.future(testObject, 3);
+            assert.equal(future.result, testObject.property + 3);
+        }).run()
+
+        // Test async call with .future() with object context 2
+        Fiber(function(){
+            var syncMethodAsync = testObject.syncMethod.async(testObject);
+            var future = syncMethodAsync.future(null, 3);
             assert.equal(future.result, testObject.property + 3);
         }).run()
     }
