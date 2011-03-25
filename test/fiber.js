@@ -25,6 +25,13 @@ var runTest = module.exports = function(callback)
         }, function(err){
             assert.equal(err, 'something went wrong');
         })
+
+        // Test throws exception without callback
+        assert.throws(function(){
+            Sync(function(){
+                throw 'something went wrong';
+            })
+        }, 'something went wrong');
         
         // Test fiber passing
         Sync(function(fiber){
