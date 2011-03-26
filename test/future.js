@@ -14,6 +14,22 @@ function asyncFunction(a, b, callback) {
     })
 }
 
+// asynchronous with timeout
+function asyncFunctionTimeout(t, callback) {
+    setTimeout(function(){
+        callback(null, 'result');
+    }, t)
+}
+
+// synchronous with timeout
+function syncFunctionTimeout(t) {
+    var fiber = Fiber.current;
+    setTimeout(function(){
+        fiber.run('result');
+    }, t)
+    return yield();
+}
+
 // Simple asynchronous function which throws an exception
 function asyncFunctionThrowsException(a, b, callback) {
     process.nextTick(function(){
@@ -111,6 +127,24 @@ var runTest = module.exports = function(callback)
         // test returning multiple arguments with object context
         var future = testObject.asyncMethodMultipleArguments.future(testObject, 3);
         assert.deepEqual(future.result, [testObject.property, 3]);
+        
+        // test two futures goes in parallel
+        var start = new Date();
+        var future1 = asyncFunctionTimeout.future(null, 100);
+        var future2 = asyncFunctionTimeout.future(null, 100);
+        assert.ok(future1.result);
+        assert.ok(future2.result);
+        var duration = new Date - start;
+        assert.ok(duration < 110);
+        
+        // test two async() futures goes in parallel
+        var start = new Date();
+        var future1 = syncFunctionTimeout.async().future(null, 100);
+        var future2 = syncFunctionTimeout.async().future(null, 100);
+        assert.ok(future1.result);
+        assert.ok(future2.result);
+        var duration = new Date - start;
+        assert.ok(duration < 110);
     
     }, function(e){
         if (e) {
