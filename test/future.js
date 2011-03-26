@@ -86,6 +86,7 @@ var runTest = module.exports = function(callback)
         var future = asyncFunction.future(null, 2, 3);
         // check future function
         assert.ok(future instanceof Sync.Future);
+        assert.ok(future instanceof Function);
         // check future result
         assert.equal(future.result, 2 + 3);
         // check error
