@@ -81,7 +81,7 @@ var testObject = {
 var runTest = module.exports = function(callback)
 {
     Sync(function(){
-    
+        
         // test on returning value
         var future = asyncFunction.future(null, 2, 3);
         // check future function
@@ -146,6 +146,16 @@ var runTest = module.exports = function(callback)
         assert.ok(future2.result);
         var duration = new Date - start;
         assert.ok(duration < 110);
+        
+        // Test futures are automatically resolved when Fiber ends
+        var futures = [];
+        Sync(function(){
+            futures.push(asyncFunction.future(null, 2, 3));
+            futures.push(asyncFunction.future(null, 2, 3));
+        }, function(err){
+            if (err) throw err;
+            while (futures.length) assert.ok(futures.shift().resolved);
+        })
     
     }, function(e){
         if (e) {
