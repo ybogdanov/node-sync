@@ -12,6 +12,7 @@ var runTest = module.exports = function(callback)
     var e;
     
     try {
+        
         // Test returning value
         Sync(function(){
             return 'some value';
@@ -32,6 +33,29 @@ var runTest = module.exports = function(callback)
                 throw 'something went wrong';
             })
         }, 'something went wrong');
+        
+        // Test callback throws exception
+        assert.throws(function(){
+            Sync(function(){
+
+            }, function(){
+                throw 'something went wrong';
+            })
+        }, 'something went wrong');
+        
+        // Test callback throws exception on next tick
+        // TODO: fails here
+        /*assert.throws(function(){
+            Sync(function(){
+                var fiber = Fiber.current;
+                process.nextTick(function(){
+                    fiber.run();
+                })
+                yield();
+            }, function(){
+                throw 'something went wrong';
+            })
+        }, 'something went wrong');*/
         
         // Test fiber passing
         Sync(function(fiber){

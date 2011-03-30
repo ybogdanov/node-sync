@@ -43,6 +43,7 @@ var runTest = module.exports = function(callback)
     var e;
     
     try {
+        
         // test on returning value
         var syncFunctionAsync = syncFunction.async();
         syncFunctionAsync(2, 3, function(err, result){
@@ -67,6 +68,13 @@ var runTest = module.exports = function(callback)
             assert.equal(result, 5);
         }).run()
         
+        // test on working synchronously within a Fiber with object context
+        Fiber(function(){
+            testObject.syncMethodAuto = testObject.syncMethod.async();
+            var result = testObject.syncMethodAuto(3);
+            assert.equal(result, testObject.property + 3);
+        }).run()
+        
         // test running in a same fiber
         Fiber(function(){
             var fiber = Fiber.current;
@@ -79,7 +87,12 @@ var runTest = module.exports = function(callback)
         // test on returning value with object context
         var syncMethodAsync = testObject.syncMethod.async(testObject);
         syncMethodAsync(3, function(err, result){
-            assert.equal(result, testObject.property + 3);
+            try {
+                assert.equal(result, testObject.property + 3);
+            }
+            catch (e){
+                console.error(e.stack);
+            }
         })
 
         // test automatic context assignment
