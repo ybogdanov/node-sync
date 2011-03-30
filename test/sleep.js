@@ -1,0 +1,41 @@
+require.paths.unshift(__dirname + '/../lib');
+
+/**
+ * Tests for Sync.sleep function
+ */
+
+var Sync = require('sync'),
+    assert = require('assert');
+
+var runTest = module.exports = function(callback)
+{
+    var e;
+    
+    try {
+        // Test sleeping correctly
+        Sync(function(){
+            var start = new Date;
+            Sync.sleep(100); // sleep on 1 sec
+            
+            assert.ok(new Date - start >= 100);
+        })
+        
+        // Test throws exception when callend not insode of fiber
+        assert.throws(function(){
+            Sync.sleep(1000);
+        }, 'should throw exception when callend not insode of fiber')
+    }
+    catch (e) {
+        console.error(e.stack);
+    }
+    
+    if (callback) {
+        callback(e);
+    }
+}
+
+if (!module.parent) {
+    runTest(function(){
+        console.log('%s done', __filename);
+    });
+}
