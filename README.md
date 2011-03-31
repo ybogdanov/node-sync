@@ -107,6 +107,38 @@ Parallel execution:
 		console.error(e);
 	}
 	
+Timeouts support
+
+	var Future = require('sync').Future;
+	
+	function asyncFunction(a, b, callback) {
+		setTimeout(function(){
+			callback(null, a + b);
+		}, 1000)
+	}
+	
+	// asyncFunction returns the result after 1000 ms
+	var foo = asyncFunction.future(null, 2, 3);
+	// but we can wait only 500ms!
+	foo.timeout = 500;
+	
+	try {
+	    var result = foo.result;
+	}
+	catch (e) {
+	    console.error(e); // Future function timed out at 500 ms
+	}
+	
+	// Same example with straight future function
+	asyncFunction(2, 3, foo = new Future(500));
+	
+	try {
+	    var result = foo.result;
+	}
+	catch (e) {
+	    console.error(e); // Future function timed out at 500 ms
+	}
+	
 See more examples in [examples](https://github.com/0ctave/node-sync/tree/master/examples) directory.
 
 # Installation
