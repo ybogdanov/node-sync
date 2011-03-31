@@ -42,4 +42,30 @@ Sync(function(){
 
 	// Wait for the result
 	console.log(foo.result); // 5 after 1 sec
+	
+	/**
+	 * Timeouts
+	 */
+	
+	// someAsyncFunction returns the result after 1000 ms
+	var foo = someAsyncFunction.future(null, 2, 3);
+	// but we can wait only 500ms!
+	foo.timeout = 500;
+	
+	try {
+	    var result = foo.result;
+	}
+	catch (e) {
+	    console.error(e); // Future function timed out at 500 ms
+	}
+	
+	// Same example with straight future function
+	someAsyncFunction(2, 3, foo = new Sync.Future(500));
+	
+	try {
+	    var result = foo.result;
+	}
+	catch (e) {
+	    console.error(e); // Future function timed out at 500 ms
+	}
 })
