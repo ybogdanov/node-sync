@@ -187,6 +187,7 @@ var runTest = module.exports = function(callback)
         
         // check error
         assert.ok(future.error instanceof Error);
+        assert.ok(~future.error.stack.indexOf(__filename));
     
         // test straight Sync.Future timeout usage
         asyncFunctionTimeout(100, future = new Sync.Future(200));
@@ -203,6 +204,7 @@ var runTest = module.exports = function(callback)
         
         // check error
         assert.ok(future.error instanceof Error);
+        assert.ok(~future.error.stack.indexOf(__filename));
     
     }, function(e){
         if (e) {
