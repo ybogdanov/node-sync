@@ -160,9 +160,49 @@ var runTest = module.exports = function(callback)
             futures.push(asyncFunction.future(null, 2, 3));
             futures.push(asyncFunction.future(null, 2, 3));
         }, function(err){
-            if (err) throw err;
-            while (futures.length) assert.ok(futures.shift().resolved);
+            if (err) return console.error(err);
+            try {
+                while (futures.length) assert.ok(futures.shift().resolved);
+            }
+            catch (e) {
+                console.error(e);
+            }
         })
+        
+        // Test timeout
+        var future = asyncFunctionTimeout.future(null, 100);
+        future.timeout = 200;
+        // check future result
+        assert.equal(future.result, 'result');
+        // check error
+        assert.strictEqual(future.error, null);
+        
+        // Test timeout error
+        var future = asyncFunctionTimeout.future(null, 100);
+        future.timeout = 50;
+        
+        assert.throws(function(){
+            future.result;
+        }, 'future should throw timeout exception')
+        
+        // check error
+        assert.ok(future.error instanceof Error);
+    
+        // test straight Sync.Future timeout usage
+        asyncFunctionTimeout(100, future = new Sync.Future(200));
+        // check error
+        assert.strictEqual(future.error, null);
+        // check future result
+        assert.equal(future.result, 'result');
+        
+        // test straight Sync.Future timeout error
+        asyncFunctionTimeout(100, future = new Sync.Future(50));
+        assert.throws(function(){
+            future.result;
+        }, 'future should throw timeout exception')
+        
+        // check error
+        assert.ok(future.error instanceof Error);
     
     }, function(e){
         if (e) {

@@ -43,20 +43,6 @@ var runTest = module.exports = function(callback)
             })
         }, 'something went wrong');
         
-        // Test callback throws exception on next tick
-        // TODO: fails here
-        /*assert.throws(function(){
-            Sync(function(){
-                var fiber = Fiber.current;
-                process.nextTick(function(){
-                    fiber.run();
-                })
-                yield();
-            }, function(){
-                throw 'something went wrong';
-            })
-        }, 'something went wrong');*/
-        
         // Test fiber passing
         Sync(function(fiber){
             assert.ok(fiber instanceof Fiber);
