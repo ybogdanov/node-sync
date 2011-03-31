@@ -8,6 +8,7 @@ You may also like [fibers-promise](https://github.com/lm1/node-fibers-promise) a
 
 # Examples
 Simply call asynchronous function synchronously:
+
 	function asyncFunction(a, b, callback) {
 		process.nextTick(function(){
 			callback(null, a + b);
@@ -23,6 +24,7 @@ Simply call asynchronous function synchronously:
     console.log(String(source)); // prints the source of this example itself
 
 It throws exceptions!
+
 	function asyncFunction(a, b, callback) {
 		process.nextTick(function(){
 			callback('something went wrong');
@@ -36,38 +38,65 @@ It throws exceptions!
 		console.error(e); // something went wrong
 	}
 
-Parallel execution:
-	var Parallel = require('sync').Parallel;
-	
-	// Parallel function will return values only when all callbacks will be executed
-	var result = Parallel(function(callback){
-		asyncFunction(2, 3, callback());
-		asyncFunction(5, 5, callback());
-		asyncFunction(10, 10, callback());
-	});
-	console.log(result); // [5, 10, 20]
-	
-	// Associative result
-	var result = Parallel(function(callback){
-		asyncFunction(2, 3, callback('foo'));
-		asyncFunction(5, 5, callback('bar'));
-		asyncFunction(10, 10, callback('baz'));
-	});
-	console.log(result); // { foo: 5, bar: 10, baz: 20 }
-	
-Future paradigm:
-	// no-yield here, call asynchronously, so functions will be called in parallel
-    var foo = someAsyncFunction.future(null, 2, 3);
-    var bar = someAsyncFunction.future(null, 4, 4);
-    
-    // we are immediately here
-    
-    // foo, bar - our tickets to the future!
-    console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
-    
-    // Yield here
-    console.log(foo.result, bar.result); // 5 8
+Transparent integration
 
+	var Sync = require('sync');
+
+	var MyNewFunctionThatUsesFibers = function(a, b) { // <-- no callback here
+		
+		// we can use yield here
+		// yield();
+		
+		// or throw an exception!
+		// throw new Error('something went wrong');
+		
+		// or even sleep
+		// Sync.sleep(200);
+		
+		// or turn fs.readFile to non-blocking synchronous function
+		// var source = require('fs').readFile.sync(null, __filename)
+		
+		return a + b; // just return a value
+		
+	}.async() // <-- here we make this function friendly with async environment
+	
+	// Classic asynchronous nodejs environment
+	var MyOldFashoinAppFunction = function() {
+		
+		// We just use our MyNewFunctionThatUsesFibers normally, in a callback-driven way
+		MyNewFunctionThatUsesFibers(2, 3, function(err, result){
+			
+			// If MyNewFunctionThatUsesFibers will throw an exception, it will go here
+			if (err) return console.error(err);
+			
+			// 'return' value of MyNewFunctionThatUsesFibers
+			console.log(result); // 5
+		})
+	}
+
+Parallel execution:
+	
+	try {
+		// Three function calls in parallel
+		var foo = asyncFunction.future(null, 2, 3);
+		var bar = asyncFunction.future(null, 5, 5);
+		var baz = asyncFunction.future(null, 10, 10);
+		
+		// We are immediately here, no blocking
+		
+		// foo, bar, baz - our tickets to the future!
+	    console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
+		
+		// Get the results
+		// (when you touch 'result' getter, it blocks until result would be returned)
+		console.log(foo.result, bar.result, baz.result); // 5 10 20
+	}
+	catch (e) {
+		// If some of async functions returned an error to a callback
+		// it will be thrown as exception
+		console.error(e);
+	}
+	
 See more examples in [examples](https://github.com/0ctave/node-sync/tree/master/examples) directory.
 
 # Installation
