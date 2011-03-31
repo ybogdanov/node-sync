@@ -21,10 +21,11 @@ function someAsyncFunction(a, b, callback) {
 Sync(function(){
     
     // no-yield here, call asynchronously
+    // this functions executes in parallel
     var foo = someAsyncFunction.future(null, 2, 3);
     var bar = someAsyncFunction.future(null, 4, 4);
     
-    // we are immediately here
+    // we are immediately here, no blocking
     
     // foo, bar - our tickets to the future!
     console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
@@ -32,4 +33,13 @@ Sync(function(){
     // Yield here
     console.log(foo.result, bar.result); // '5 8' after 1 sec (not two)
     
+	// Or you can straightly use Sync.Future without wrapper
+	// This call doesn't blocks
+	someAsyncFunction(2, 3, foo = new Sync.Future());
+	
+	// foo is a ticket
+    console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
+
+	// Wait for the result
+	console.log(foo.result); // 5 after 1 sec
 })

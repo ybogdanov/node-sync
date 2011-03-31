@@ -90,6 +90,16 @@ Parallel execution:
 		// Get the results
 		// (when you touch 'result' getter, it blocks until result would be returned)
 		console.log(foo.result, bar.result, baz.result); // 5 10 20
+		
+		// Or you can straightly use Sync.Future without wrapper
+		// This call doesn't blocks
+		asyncFunction(2, 3, foo = new Sync.Future());
+		
+		// foo is a ticket
+	    console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
+	
+		// Wait for the result
+		console.log(foo.result); // 5
 	}
 	catch (e) {
 		// If some of async functions returned an error to a callback

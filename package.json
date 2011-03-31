@@ -1,7 +1,7 @@
 {
     "name": "sync",
     "description": "Library that makes simple to run asynchronous functions in synchronous manner, using node-fibers.",
-    "version": "v0.1.3",
+    "version": "v0.1.4",
     "url": "http://github.com/octave/node-sync",
     "author": "Yuriy Bogdanov <chinsay@gmail.com>",
     "main": "lib/sync",

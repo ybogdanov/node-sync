@@ -129,6 +129,13 @@ var runTest = module.exports = function(callback)
         var future = testObject.asyncMethodMultipleArguments.future(testObject, 3);
         assert.deepEqual(future.result, [testObject.property, 3]);
         
+        // test straight Sync.Future usage
+        asyncFunction(2, 3, future = new Sync.Future());
+        // check error
+        assert.strictEqual(future.error, null);
+        // check future result
+        assert.equal(future.result, 2 + 3);
+        
         // test two futures goes in parallel
         var start = new Date();
         var future1 = asyncFunctionTimeout.future(null, 100);
