@@ -137,34 +137,42 @@ var runTest = module.exports = function(callback)
         }).run()
         
         // Test async call with .future()
-        Fiber(function(){
+        Sync(function(){
             var syncFunctionAsync = syncFunction.async();
             var future = syncFunctionAsync.future(null, 2, 3);
             assert.equal(future.result, 2 + 3);
-        }).run()
+        }, function(err){
+            if (err) console.error(err);
+        })
 
         // Test async call with .future() throwing exception
-        Fiber(function(){
+        Sync(function(){
             var syncFunctionThrowsExceptionAsync = syncFunctionThrowsException.async();
             var future = syncFunctionThrowsExceptionAsync.future(null, 2, 3);
             assert.throws(function(){
                 future.result;
             }, 'something went wrong');
-        }).run()
+        }, function(err){
+            if (err) console.error(err);
+        })
 
         // Test async call with .future() with object context
-        Fiber(function(){
+        Sync(function(){
             var syncMethodAsync = testObject.syncMethod.async(testObject);
             var future = syncMethodAsync.future(testObject, 3);
             assert.equal(future.result, testObject.property + 3);
-        }).run()
+        }, function(err){
+            if (err) console.error(err);
+        })
 
         // Test async call with .future() with object context 2
-        Fiber(function(){
+        Sync(function(){
             var syncMethodAsync = testObject.syncMethod.async(testObject);
             var future = syncMethodAsync.future(null, 3);
             assert.equal(future.result, testObject.property + 3);
-        }).run()
+        }, function(err){
+            if (err) console.error(err);
+        })
     }
     catch (e) {
         console.error(e.stack);
