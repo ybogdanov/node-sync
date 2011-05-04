@@ -116,7 +116,8 @@ Transparent integration
 
 Parallel execution:
 
-	var Sync = require('sync');
+	var Sync = require('sync'),
+		Future = Sync.Future();
 
 	// Run in a fiber
 	Sync(function(){
@@ -137,7 +138,7 @@ Parallel execution:
 		
 			// Or you can straightly use Sync.Future without wrapper
 			// This call doesn't blocks
-			asyncFunction(2, 3, foo = new Sync.Future());
+			asyncFunction(2, 3, foo = Future());
 		
 			// foo is a ticket
 		    console.log(foo); // { [Function: Future] result: [Getter], error: [Getter] }
