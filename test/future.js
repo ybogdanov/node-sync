@@ -205,6 +205,40 @@ var runTest = module.exports = function(callback)
         // check error
         assert.ok(future.error instanceof Error);
         assert.ok(~future.error.stack.indexOf(__filename));
+        
+        // TODO: test multiple future calls with errors
+        return;
+        
+        var foo = function(a, b, callback)
+        {
+            process.nextTick(function(){
+                callback('error');
+            })
+        }
+        
+        var fn = function()
+        {
+            var future = foo.future(null, 2, 3);
+            var future2 = foo.future(null, 2, 3);
+            console.log('x');
+            var a = future.result;
+            console.log('y');
+            var b = future2.result;
+            
+        }.async()
+        
+        Sync(function(){
+            
+            try {
+                fn.sync();
+            }
+            catch (e) {
+                console.log('catched', e.stack);
+            }
+            
+        }, function(err){
+            if (err) console.error('hehe', err);
+        })
     
     }, function(e){
         if (e) {
