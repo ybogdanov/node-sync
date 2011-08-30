@@ -9,6 +9,6 @@
         "node": ">=0.3.6"
     },
     "dependencies" : {
-        "fibers": ">=0.2.6 <0.6"
+        "fibers": ">=0.5"
     }
 }
