@@ -5,7 +5,7 @@
 
 var fs = require('fs');
 
-var tests = ['fiber', 'sync', 'async', 'parallel', 'future', 'sleep'];
+var tests = ['fiber', 'sync', 'async', 'future', 'sleep'];
 var i = 0;
 tests.forEach(function(name){
     

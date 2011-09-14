@@ -1,7 +1,7 @@
 {
     "name": "sync",
     "description": "Library that makes simple to run asynchronous functions in synchronous manner, using node-fibers.",
-    "version": "v0.1.9beta2",
+    "version": "v0.1.9beta3",
     "url": "http://github.com/0ctave/node-sync",
     "author": "Yuriy Bogdanov <chinsay@gmail.com>",
     "main": "lib/sync",
@@ -9,6 +9,6 @@
         "node": ">=0.3.6"
     },
     "dependencies" : {
-        "fibers": ">=0.5"
+        "fibers": ">=0.5 < 0.6"
     }
 }

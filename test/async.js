@@ -57,10 +57,10 @@ var runTest = module.exports = function(callback)
         })
         
         // test on throws exception when call without callback
-        var syncFunctionAsync = syncFunction.async();
+        /*var syncFunctionAsync = syncFunction.async();
         assert.throws(function(){
             syncFunctionAsync(2, 3);
-        }, 'Missing callback as last argument to async function');
+        }, 'Missing callback as last argument to async function');*/
         
         // test on working synchronously within a Fiber
         Fiber(function(){
