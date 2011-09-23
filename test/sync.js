@@ -14,6 +14,11 @@ function asyncFunction(a, b, callback) {
     })
 }
 
+// Simple asynchronous function which invokes callback in the same tick
+function asyncFunctionSync(a, b, callback) {
+    callback(null, a + b);
+}
+
 // Simple asynchronous function returning a value synchronously
 function asyncFunctionReturningValue(a, b, callback) {
     process.nextTick(function(){
@@ -35,6 +40,11 @@ function asyncFunctionThrowsException(a, b, callback) {
     process.nextTick(function(){
         callback('something went wrong');
     })
+}
+
+// Simple asynchronous function which throws an exception in the same tick
+function asyncFunctionThrowsExceptionSync(a, b, callback) {
+    callback('something went wrong');
 }
 
 // Simple asynchronous function which throws an exception and returning a value synchronously
@@ -93,10 +103,19 @@ var runTest = module.exports = function(callback)
         // test on returning value
         var result = asyncFunction.sync(null, 2, 3);
         assert.equal(result, 2 + 3);
+        
+        // test on returning value in the same tick
+        var result = asyncFunctionSync.sync(null, 2, 3);
+        assert.equal(result, 2 + 3);
     
         // test on throws exception
         assert.throws(function(){
             var result = asyncFunctionThrowsException.sync(null, 2, 3);
+        }, 'something went wrong');
+        
+        // test on throws exception in the same tick
+        assert.throws(function(){
+            var result = asyncFunctionThrowsExceptionSync.sync(null, 2, 3);
         }, 'something went wrong');
         
         // test asynchronous function should not return a synchronous value
@@ -132,6 +151,22 @@ var runTest = module.exports = function(callback)
         // test returning multiple arguments with object context
         var result = testObject.asyncMethodMultipleArguments.sync(testObject, 3);
         assert.deepEqual(result, [testObject.property, 3]);
+        
+        // test double-callback
+        var result = function(callback) {
+            callback(null, 1);
+            callback(null, 2);
+        }.sync()
+        
+        assert.strictEqual(1, result);
+        
+        // test undefined result
+        // test double-callback
+        var result = function(callback) {
+            callback();
+        }.sync()
+        
+        assert.strictEqual(undefined, result);
     
     }, function(e){
         if (e) {
