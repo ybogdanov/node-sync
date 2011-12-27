@@ -1,6 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
-
 /**
  * This example shows how we can use Fibers in a single peaces of code,
  * without wrapping whole application to it

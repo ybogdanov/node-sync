@@ -1,6 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
-
 /**
  * This simple example shows how you can use synchronous function that uses Fibers in asynchronous environment
  */

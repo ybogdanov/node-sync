@@ -1,6 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
-
 /**
  * Future example
  * Shows how we can postpone yielding and call multiple functions in parallel

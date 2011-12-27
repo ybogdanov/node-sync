@@ -1,4 +1,3 @@
-require.paths.unshift(__dirname + '/../lib');
 
 /**
  * Example demonstrates how you can use Function.prototype.async() to use any

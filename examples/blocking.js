@@ -1,6 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
-
 /**
  * Example demonstrates that Fibers does not block whole process while yielding
  */

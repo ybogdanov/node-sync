@@ -1,6 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
-
 /**
  * The example of some object which has a property and
  * asynchronous method which uses this.someProperty to get it's value

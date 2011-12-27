@@ -1,5 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
 
 /**
  * Simple benchmark which compares eventloop speed with Fibers sync

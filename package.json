@@ -6,9 +6,9 @@
     "author": "Yuriy Bogdanov <chinsay@gmail.com>",
     "main": "lib/sync",
     "engines": {
-        "node": ">=0.3.6"
+        "node": ">=0.5.2"
     },
     "dependencies" : {
-        "fibers": ">=0.5 < 0.6"
+        "fibers": ">=0.6"
     }
 }

@@ -1,4 +1,3 @@
-require.paths.unshift(__dirname + '/../lib');
 
 /**
  * This simple example shows how you can easily pass variables across fibers tree
@@ -27,18 +26,17 @@ var Sync = require('sync');
 
 var someGatewayMethod = function() {
     
-    var fiber = Fiber.current;
+    var scope = Sync.scope;
     setInterval(function(){
-        console.log(fiber.req);
+        console.log(scope.req);
     }, 1000)
-    
     
 }.async()
 
 // One fiber (e.g. user's http request)
 Sync(function(){
     
-    Fiber.current.req = 'request #1';
+    Sync.scope.req = 'request #1';
     
     // future() runs someGatewayMethod in a separate "forked" fiber
     someGatewayMethod.future();
@@ -47,7 +45,7 @@ Sync(function(){
 // Another fiber (e.g. user's http request)
 Sync(function(){
     
-    Fiber.current.req = 'request #2';
+    Sync.scope.req = 'request #2';
     
     // future() runs someGatewayMethod in a separate "forked" fiber
     someGatewayMethod.future();
