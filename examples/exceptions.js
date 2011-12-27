@@ -1,6 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
-
 /**
  * This example shows how you can deal with exceptions handling with Sync library
  */

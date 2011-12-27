@@ -1,6 +1,4 @@
 
-require.paths.unshift(__dirname + '/../lib');
-
 /**
  * This simple example shows how you can run ANY asynchronous function in synchronous manner
  */

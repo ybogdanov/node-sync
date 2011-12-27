@@ -1,4 +1,3 @@
-require.paths.unshift(__dirname + '/../lib');
 
 /**
  * Tests for Sync function

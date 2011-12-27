@@ -22,16 +22,52 @@
  * request #2
  */
 
-var Sync = require('sync');
+var Sync = require('..');
+
+var x = function() {
+    
+    //Sync.sleep(100);
+    
+    throw new Error('hehe');
+    console.log(scope.req);
+
+}.async();
 
 var someGatewayMethod = function() {
     
     var scope = Sync.scope;
-    setInterval(function(){
-        console.log(scope.req);
-    }, 1000)
+    
+    //throw new Error('hehe');
+    //Sync.sleep(100);
+    
+    //x.future();
+    
+    x.future();
+    //x();
+    
+    return;
+    
+    setTimeout(function(){
+        
+        //console.log(Fiber.current)
+        //throw new Error('hehe');
+        
+        var x = function() {
+            
+            throw new Error('hehe');
+            console.log(scope.req);
+
+        }.async();
+        
+        x.future();
+        //x();
+        
+        
+    }.async(), 100)
+    
     
 }.async()
+
 
 // One fiber (e.g. user's http request)
 Sync(function(){
@@ -40,13 +76,20 @@ Sync(function(){
     
     // future() runs someGatewayMethod in a separate "forked" fiber
     someGatewayMethod.future();
-})
+    //someGatewayMethod();
+    
+    //console.log(f.error);
+    
+    //someGatewayMethod();
+    //Sync.waitFutures();
+    
+}, Sync.log)
 
 // Another fiber (e.g. user's http request)
-Sync(function(){
+/*Sync(function(){
     
     Sync.scope.req = 'request #2';
     
     // future() runs someGatewayMethod in a separate "forked" fiber
     someGatewayMethod.future();
-})
+})*/

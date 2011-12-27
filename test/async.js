@@ -1,4 +1,3 @@
-require.paths.unshift(__dirname + '/../lib');
 
 /**
  * Tests for Function.prototype.async
@@ -57,10 +56,10 @@ var runTest = module.exports = function(callback)
         })
         
         // test on throws exception when call without callback
-        var syncFunctionAsync = syncFunction.async();
+        /*var syncFunctionAsync = syncFunction.async();
         assert.throws(function(){
             syncFunctionAsync(2, 3);
-        }, 'Missing callback as last argument to async function');
+        }, 'Missing callback as last argument to async function');*/
         
         // test on working synchronously within a Fiber
         Fiber(function(){
@@ -148,8 +147,8 @@ var runTest = module.exports = function(callback)
         // Test async call with .future() throwing exception
         Sync(function(){
             var syncFunctionThrowsExceptionAsync = syncFunctionThrowsException.async();
-            var future = syncFunctionThrowsExceptionAsync.future(null, 2, 3);
             assert.throws(function(){
+                var future = syncFunctionThrowsExceptionAsync.future(null, 2, 3);
                 future.result;
             }, 'something went wrong');
         }, function(err){
@@ -173,6 +172,36 @@ var runTest = module.exports = function(callback)
         }, function(err){
             if (err) console.error(err);
         })
+        
+        // Test async call in the same fiber
+        Sync(function(){
+            
+            var result;
+            
+            var someSyncFunction = function() {
+                
+                result = asyncFunction.sync(null, 2, 3);
+                
+            }.async()
+            
+            var fiber = Fiber.current;
+            
+            process.nextTick(function(){
+                someSyncFunction();
+                
+                process.nextTick(function(){
+                    fiber.run();
+                })
+            })
+            
+            Fiber.yield();
+            
+            assert.equal(result, 5);
+            
+        }, function(err){
+            if (err) console.error(err);
+        })
+        
     }
     catch (e) {
         console.error(e.stack);

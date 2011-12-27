@@ -1,4 +1,3 @@
-require.paths.unshift(__dirname + '/../lib');
 
 /**
  * Tests for Function.prototype.future
@@ -92,6 +91,13 @@ var runTest = module.exports = function(callback)
         // check error
         assert.strictEqual(future.error, null);
         
+        // test on returning value
+        var future = asyncFunction.future(null, 2, 3);
+        // check future result
+        assert.equal(future.yield(), 2 + 3);
+        // check error
+        assert.strictEqual(future.error, null);
+        
         // check yield on error getter
         var future = asyncFunction.future(null, 2, 3);
         // check error
@@ -105,7 +111,7 @@ var runTest = module.exports = function(callback)
             future.result;
         }, 'something went wrong');
         // check error
-        assert.ok(future.error instanceof Error);
+        assert.ok(future.error);
         
         // test returning multiple arguments
         var future = asyncFunctionMultipleArguments.future(null, 2, 3);
