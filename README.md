@@ -209,5 +209,5 @@ $ npm install sync
 ```
 and then
 ```bash
-$ node-fibers your_file.js
+$ node your_file_using_sync.js
 ```
