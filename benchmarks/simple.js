@@ -3,25 +3,25 @@
 /**
  * Simple benchmark which compares eventloop speed with Fibers sync
  *
- * On Macbook Pro 2.2 GHz Core 2 Duo (node v0.4.2, node-fibers v0.2.2):
- * Event-loop took 2294 ms
- * Sync took 600 ms
+ * On Macbook Pro 2.2 GHz Core 2 Duo (node v0.4.8, node-fibers v0.5.1):
+ * Event-loop took 219 ms
+ * Sync took 673 ms
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 function sum(a, b, callback) {
-    callback(null, a + b);
+    process.nextTick(function(){
+        callback(null, a + b);
+    })
 }
 
-var max = 1000000;
+var max = 100000;
 
 function loop(i, callback) {
     sum(3, 4, function(){
         if (i < max) {
-            process.nextTick(function(){
-                loop(i + 1, callback);
-            })
+            loop(i + 1, callback);
         }
         else {
             callback();
