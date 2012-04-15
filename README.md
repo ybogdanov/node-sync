@@ -1,4 +1,3 @@
-
 # Introduction
 node-sync is a simple library that allows you to call any asynchronous function in synchronous way. The main benefit is that it uses javascript-native design - Function.prototype.sync function, instead of heavy APIs which you'll need to learn. Also, asynchronous function which was called synchronously through node-sync doesn't blocks the whole process - it blocks only current thread!
 
@@ -204,10 +203,12 @@ See more examples in [examples](https://github.com/0ctave/node-sync/tree/master/
 
 # Installation
 install
+
 ```bash
 $ npm install sync
 ```
 and then
+
 ```bash
 $ node your_file_using_sync.js
 ```
