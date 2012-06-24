@@ -3,7 +3,7 @@
  * Tests for Sync function
  */
 
-var Sync = require('sync'),
+var Sync = require('..'),
     assert = require('assert');
 
 var runTest = module.exports = function(callback)

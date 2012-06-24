@@ -3,7 +3,7 @@
  * Tests for Function.prototype.sync
  */
 
-var Sync = require('sync'),
+var Sync = require('..'),
     assert = require('assert');
 
 // Simple asynchronous function
@@ -22,14 +22,6 @@ function asyncFunctionSync(a, b, callback) {
 function asyncFunctionReturningValue(a, b, callback) {
     process.nextTick(function(){
         callback(null, a + b);
-    })
-    return 123;
-}
-
-// Asynchronous which returns multiple arguments to a callback and returning a value synchronously
-function asyncFunctionReturningValueMultipleArguments(a, b, callback) {
-    process.nextTick(function(){
-        callback(null, a, b);
     })
     return 123;
 }
@@ -62,13 +54,6 @@ function asyncFunctionCallbackTwice(a, b, callback) {
     })
 }
 
-// Asynchronous which returns multiple arguments to a callback
-function asyncFunctionMultipleArguments(a, b, callback) {
-    process.nextTick(function(){
-        callback(null, a, b);
-    })
-}
-
 // test object
 var testObject = {
     
@@ -84,13 +69,6 @@ var testObject = {
     asyncMethodThrowsException : function someAsyncMethodThrowsException(b, callback) {
         process.nextTick(function(){
             callback('something went wrong');
-        })
-    },
-    
-    asyncMethodMultipleArguments : function asyncMethodMultipleArguments(b, callback) {
-        var self = this;
-        process.nextTick(function(){
-            callback(null, self.property, b);
         })
     }
 }
@@ -112,23 +90,15 @@ var runTest = module.exports = function(callback)
             var result = asyncFunctionThrowsException.sync(null, 2, 3);
         }, 'something went wrong');
         
-        // test on throws exception in the same tick
-        assert.throws(function(){
-            var result = asyncFunctionThrowsExceptionSync.sync(null, 2, 3);
-        }, 'something went wrong');
-        
         // test asynchronous function should not return a synchronous value
         var result = asyncFunctionReturningValue.sync(null, 2, 3);
         assert.equal(result, 2 + 3);
-    
-        // test returning multiple arguments
-        var result = asyncFunctionMultipleArguments.sync(null, 2, 3);
-        assert.deepEqual(result, [2, 3]);
         
-        // test asynchronous function should not return a synchronous value (multiple arguments)
-        var result = asyncFunctionReturningValueMultipleArguments.sync(null, 2, 3);
-        assert.deepEqual(result, [2, 3]);
-        
+        // test asynchronous function should not return a synchronous value (throwing exception)
+        assert.throws(function(){
+            var result = asyncFunctionReturningValueThrowsException.sync(null, 2, 3);
+        }, 'something went wrong');
+
         // test asynchronous function should not return a synchronous value (throwing exception)
         assert.throws(function(){
             var result = asyncFunctionReturningValueThrowsException.sync(null, 2, 3);
@@ -146,10 +116,6 @@ var runTest = module.exports = function(callback)
         assert.throws(function(){
             var result = testObject.asyncMethodThrowsException.sync(testObject, 2);
         }, 'something went wrong');
-    
-        // test returning multiple arguments with object context
-        var result = testObject.asyncMethodMultipleArguments.sync(testObject, 3);
-        assert.deepEqual(result, [testObject.property, 3]);
         
         // test double-callback
         var result = function(callback) {

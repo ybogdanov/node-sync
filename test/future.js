@@ -3,7 +3,7 @@
  * Tests for Function.prototype.future
  */
 
-var Sync = require('sync'),
+var Sync = require('..'),
     assert = require('assert');
 
 // Simple asynchronous function
