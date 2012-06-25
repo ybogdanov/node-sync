@@ -113,8 +113,8 @@ loop(0, function(){
         for(var i = 0; i <= max; i++) {
             sumAsync.sync(null, 3, 4);
         }
-        var asyncTime = new Date - start;
-        console.log('async().sync() took %d ms (x%d)', asyncTime, ~~ (asyncTime / nativeTime));
+        var asyncSyncTime = new Date - start;
+        console.log('async().sync() took %d ms (x%d)', asyncSyncTime, ~~ (asyncSyncTime / nativeTime));
 
         var Future = require('fibers/future');
         var sumFuture = Future.wrap(sum);
@@ -122,8 +122,8 @@ loop(0, function(){
         for(var i = 0; i <= max; i++) {
             Future.wait(sumFuture(3, 4));
         }
-        var asyncTime = new Date - start;
-        console.log('Fibers.future took %d ms (x%d)', asyncTime, ~~ (asyncTime / nativeTime));
+        var fibersFutureTime = new Date - start;
+        console.log('Fibers.future took %d ms (x%d)', fibersFutureTime, ~~ (fibersFutureTime / nativeTime));
 
         // Test Fibers
         Fiber(function(){
