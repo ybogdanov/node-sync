@@ -44,13 +44,6 @@ function asyncFunctionCallbackTwice(a, b, callback) {
     })
 }
 
-// Asynchronous which returns multiple arguments to a callback
-function asyncFunctionMultipleArguments(a, b, callback) {
-    process.nextTick(function(){
-        callback(null, a, b);
-    })
-}
-
 // test object
 var testObject = {
     
@@ -66,13 +59,6 @@ var testObject = {
     asyncMethodThrowsException : function someAsyncMethodThrowsException(b, callback) {
         process.nextTick(function(){
             callback('something went wrong');
-        })
-    },
-    
-    asyncMethodMultipleArguments : function asyncMethodMultipleArguments(b, callback) {
-        var self = this;
-        process.nextTick(function(){
-            callback(null, self.property, b);
         })
     }
 }
@@ -113,10 +99,6 @@ var runTest = module.exports = function(callback)
         // check error
         assert.ok(future.error);
         
-        // test returning multiple arguments
-        var future = asyncFunctionMultipleArguments.future(null, 2, 3);
-        assert.deepEqual(future.result, [2, 3]);
-        
         // test asynchronous which calls callback twice (should not be called twice)
         var future = asyncFunctionCallbackTwice.future(null, 2, 3);
         assert.equal(future.result, 2 + 3);
@@ -130,10 +112,6 @@ var runTest = module.exports = function(callback)
         assert.throws(function(){
             future.result;
         }, 'something went wrong');
-        
-        // test returning multiple arguments with object context
-        var future = testObject.asyncMethodMultipleArguments.future(testObject, 3);
-        assert.deepEqual(future.result, [testObject.property, 3]);
         
         // test straight Sync.Future usage
         asyncFunction(2, 3, future = new Sync.Future());
