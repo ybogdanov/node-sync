@@ -3,22 +3,23 @@
  * Tests for Sync.sleep function
  */
 
-var Sync = require('..'),
+var Fiber = require('fibers'),
+    Sync = require('..'),
     assert = require('assert');
 
 var runTest = module.exports = function(callback)
 {
     var e;
-    
+
     try {
         // Test sleeping correctly
         Sync(function(){
             var start = new Date;
             Sync.sleep(101); // sleep on 100 ms
-            
+
             assert.ok(new Date - start >= 100);
         })
-        
+
         // Test throws exception when callend not insode of fiber
         assert.throws(function(){
             Sync.sleep(1000);
@@ -27,7 +28,7 @@ var runTest = module.exports = function(callback)
     catch (e) {
         console.error(e.stack);
     }
-    
+
     if (callback) {
         callback(e);
     }

@@ -3,15 +3,16 @@
  * Tests for Sync function
  */
 
-var Sync = require('..'),
+var Fiber = require('fibers'),
+    Sync = require('..'),
     assert = require('assert');
 
 var runTest = module.exports = function(callback)
 {
     var e;
-    
+
     try {
-        
+
         // Test returning value
         Sync(function(){
             return 'some value';
@@ -32,7 +33,7 @@ var runTest = module.exports = function(callback)
                 throw 'something went wrong';
             })
         }, 'something went wrong');
-        
+
         // Test callback throws exception
         assert.throws(function(){
             Sync(function(){
@@ -41,7 +42,7 @@ var runTest = module.exports = function(callback)
                 throw 'something went wrong';
             })
         }, 'something went wrong');
-        
+
         // Test fiber passing
         Sync(function(fiber){
             assert.ok(fiber instanceof Fiber);
@@ -53,7 +54,7 @@ var runTest = module.exports = function(callback)
                 return 'test';
             })
         })
-        
+
         // Test backwards capability
         Sync.Fiber(function(){
             return 'some value';
@@ -64,7 +65,7 @@ var runTest = module.exports = function(callback)
     catch (e) {
         console.error(e.stack);
     }
-    
+
     if (callback) {
         callback(e);
     }
