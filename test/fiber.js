@@ -28,11 +28,12 @@ var runTest = module.exports = function(callback)
         })
 
         // Test throws exception without callback
-        assert.throws(function(){
-            Sync(function(){
-                throw 'something went wrong';
-            })
-        }, 'something went wrong');
+        // Update: do not throw exception if no callback
+        // assert.throws(function(){
+        //     Sync(function(){
+        //         throw 'something went wrong';
+        //     })
+        // }, 'something went wrong');
         
         // Test callback throws exception
         assert.throws(function(){
