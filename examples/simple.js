@@ -3,7 +3,7 @@
  * This simple example shows how you can run ANY asynchronous function in synchronous manner
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 // Simple asynchronous function example
 function someAsyncFunction(a, b, callback) {

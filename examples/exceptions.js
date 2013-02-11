@@ -3,7 +3,7 @@
  * This example shows how you can deal with exceptions handling with Sync library
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 // Simple asynchronous function which returns and error to a callback
 // look at examples/simple.js to see how someAsyncFunction works normally

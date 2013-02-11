@@ -4,7 +4,7 @@
  * prototype function synchronously - transparently binded current object to it
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 // Simple asynchronous function
 function asyncFunction(a, b, callback) {

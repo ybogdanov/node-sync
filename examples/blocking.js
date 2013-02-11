@@ -3,7 +3,7 @@
  * Example demonstrates that Fibers does not block whole process while yielding
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 // Some asynchronous function
 function someAsyncFunction(a, b, callback) {

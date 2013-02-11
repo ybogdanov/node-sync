@@ -6,7 +6,7 @@
  * look at examples/simple.js to see the difference in someAsyncFunction
  */
  
-var Sync = require('sync');
+var Sync = require('..');
 
 // Simple asynchronous function with fiber inside example
 function someAsyncFunction(file, callback) {

@@ -3,7 +3,7 @@
  * This simple example shows how you can use synchronous function that uses Fibers in asynchronous environment
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 // Simple synchronous function example
 var someSyncFunction = function(a, b)

@@ -6,7 +6,7 @@
  *
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 // Simple asynchronous function example
 function someAsyncFunction(a, b, callback) {

@@ -5,7 +5,7 @@
  * and we want to call this method synchronously
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 // the object
 var someObject = {

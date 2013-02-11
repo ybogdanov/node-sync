@@ -22,7 +22,7 @@
  * request #2
  */
 
-var Sync = require('sync');
+var Sync = require('..');
 
 var someGatewayMethod = function() {
     
