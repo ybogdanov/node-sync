@@ -53,17 +53,18 @@ someSyncFunction(__filename, function(err, source){
 })
 
 /**
- * Exceptions inside of a Sync.Parallel
- * see examples/parallel.js for more details about Sync.Parallel
+ * Exceptions inside of a Sync.Future
+ * see examples/future.js for more details about Sync.Future
  */
 Sync(function(){
     
     // Here we need to call someAsyncFunction two times with different arguments in parallel
     // but wait for both results and only then continue
     try {
-        var results = Sync.Parallel(function(callback){
-            someAsyncFunction(2, 2, callback());
-        });
+        var result1 = someAsyncFunction.future(null, 2, 2),
+            result2 = someAsyncFunction.future(null, 3, 3);
+        result1.yield();
+        result2.yield();
     }
     catch (e) {
         console.error(e); // will print 'something went wrong' after 1 sec
