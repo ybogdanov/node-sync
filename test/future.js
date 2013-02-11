@@ -4,6 +4,7 @@
  */
 
 var Sync = require('..'),
+    Fiber = require('fibers'),
     assert = require('assert');
 
 // Simple asynchronous function
@@ -26,7 +27,7 @@ function syncFunctionTimeout(t) {
     setTimeout(function(){
         fiber.run('result');
     }, t)
-    return yield();
+    return Fiber.yield();
 }
 
 // Simple asynchronous function which throws an exception

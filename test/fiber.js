@@ -4,6 +4,7 @@
  */
 
 var Sync = require('..'),
+    Fiber = require('fibers'),
     assert = require('assert');
 
 var runTest = module.exports = function(callback)
