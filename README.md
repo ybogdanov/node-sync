@@ -3,8 +3,6 @@ node-sync is a simple library that allows you to call any asynchronous function 
 
 It built on [node-fibers](https://github.com/laverdet/node-fibers) library as a multithreading solution.
 
-You may also like [fibers-promise](https://github.com/lm1/node-fibers-promise) and [node-fiberize](https://github.com/lm1/node-fiberize) libraries.
-
 # Examples
 Simply call asynchronous function synchronously:
 
