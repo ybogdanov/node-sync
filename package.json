@@ -5,6 +5,7 @@
     "url": "http://github.com/0ctave/node-sync",
     "author": "Yuriy Bogdanov <chinsay@gmail.com>",
     "main": "lib/sync",
+    "license": "MIT",
     "engines": {
         "node": ">=0.5.2"
     },
