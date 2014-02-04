@@ -11,5 +11,9 @@
     },
     "dependencies" : {
         "fibers": ">=0.6"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/0ctave/node-sync.git"
     }
 }
