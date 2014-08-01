@@ -1,19 +1,19 @@
 {
-    "name": "sync",
-    "description": "Library that makes simple to run asynchronous functions in synchronous manner, using node-fibers.",
-    "version": "v0.2.2",
-    "url": "http://github.com/0ctave/node-sync",
-    "author": "Yuriy Bogdanov <chinsay@gmail.com>",
-    "main": "lib/sync",
-    "license": "MIT",
-    "repository": {
-        "type" : "git",
-        "url" : "https://github.com/ybogdanov/node-sync.git"
-    },
-    "engines": {
-        "node": ">=0.5.2"
-    },
-    "dependencies" : {
-        "fibers": ">=0.6"
-    }
+  "name": "sync",
+  "description": "Library that makes simple to run asynchronous functions in synchronous manner, using node-fibers.",
+  "version": "0.2.3",
+  "url": "http://github.com/0ctave/node-sync",
+  "author": "Yuriy Bogdanov <chinsay@gmail.com>",
+  "main": "lib/sync",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ybogdanov/node-sync.git"
+  },
+  "engines": {
+    "node": ">=0.5.2"
+  },
+  "dependencies": {
+    "fibers": ">=0.6"
+  }
 }
