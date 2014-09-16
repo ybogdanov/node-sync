@@ -196,6 +196,23 @@ Sync(function(){
 	}
 })
 ```
+
+# How to address non-uniform callbacks
+Sometimes third-party libraries are not following convention and passing multiple result parameters to the callback, e.g. `callback(err, recordsets, returnValue)`. In this situation, `node-sync` will simply return array of values instead of value.
+
+```javascript
+// Asynchronous which returns multiple arguments to a callback and returning a value synchronously
+function asyncFunctionReturningMultipleArguments(callback) {
+    process.nextTick(function(){
+        callback(null, 2, 3);
+    })
+}
+
+Sync(function(){
+    var result = asyncFunctionReturningMultipleArguments.sync();
+    assert.equal(result, [2, 3]);
+})
+```
 	
 See more examples in [examples](https://github.com/0ctave/node-sync/tree/master/examples) directory.
 
